@@ -10,14 +10,20 @@ export default function App() {
     setTasks([...tasks, { ...task, id: Date.now() }]);  
   }
 
+  function moveTask(id, newStatus) {
+    setTasks(tasks.map(task =>
+      task.id === id ? { ...task, status: newStatus } : task
+    ));
+  }
+
   return (
     <div className="app">
       <h1>Kanban Board</h1>
       <TaskForm onAdd={addTask} />
       <div className="board">
-        <Column title="A Fazer" tasks={tasks.filter(t => t.status === "todo")} />
-        <Column title="Em Andamento" tasks={tasks.filter(t => t.status === "doing")} />
-        <Column title="Concluído" tasks={tasks.filter(t => t.status === "done")} /> 
+        <Column title="A Fazer" tasks={tasks.filter(t => t.status === "todo")} onMove={moveTask} />
+        <Column title="Em Andamento" tasks={tasks.filter(t => t.status === "doing")} onMove={moveTask} />
+        <Column title="Concluído" tasks={tasks.filter(t => t.status === "done")} onMove={moveTask} /> 
       </div> 
     </div>
   )
